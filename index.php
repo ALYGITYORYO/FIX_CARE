@@ -20,31 +20,53 @@
     <?php require_once "./app/views/inc/head.php"; ?>
 </head>
 <body>
-    <?php
-        use app\controllers\viewsController;
-        use app\controllers\loginController;
 
-        $insLogin = new loginController();
+  <?php
+  use app\controllers\viewsController;
+  use app\controllers\loginController;
 
-        $viewsController= new viewsController();
-        $vista=$viewsController->obtenerVistasControlador($url[0]);
+  $insLogin = new loginController();
 
-        if($vista=="login" || $vista=="404"){
+  $viewsController= new viewsController();
+  $vista=$viewsController->obtenerVistasControlador($url[0]);
+
+  if($vista=="login" || $vista=="404"){
+    if($vista=="login"){
+        if((!isset($_SESSION['id']) || $_SESSION['id']=="") || (!isset($_SESSION['usuario']) || $_SESSION['usuario']=="")){
             require_once "./app/views/content/".$vista."-view.php";
-        }else{
-
-            # Cerrar sesion #
-            if((!isset($_SESSION['id']) || $_SESSION['id']=="") || (!isset($_SESSION['usuario']) || $_SESSION['usuario']=="")){
-                $insLogin->cerrarSesionControlador();
-                exit();
+           
+          }
+          else{
+            if(headers_sent()){
+                echo "<script> window.location.href='".APP_URL."dashboard/'; </script>";
+            }else{
+                header("Location: ".APP_URL."dashboard/");
             }
+          }
+    }else{
+        require_once "./app/views/content/".$vista."-view.php";
+    }
+     
+  }else{
 
-            require_once "./app/views/inc/navbar.php";
+      # Cerrar sesion #
+      
+      if((!isset($_SESSION['id']) || $_SESSION['id']=="") || (!isset($_SESSION['usuario']) || $_SESSION['usuario']=="")){
+        $insLogin->cerrarSesionControlador();
+        exit();
+         
+      }
+      else{
+        require_once "./app/views/inc/header.php";
+        require_once "./app/views/inc/navbar.php";
+        require_once $vista;
+        require_once "./app/views/inc/footer.php";
+      }
+     
 
-            require_once $vista;
-        }
+  }
 
-        require_once "./app/views/inc/script.php"; 
+  require_once './app/views/inc/script.php';
     ?>
 </body>
 </html>

@@ -116,7 +116,7 @@
             }
 
             # Verificando usuario #
-		    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
+		    $check_usuario=$this->ejecutarConsulta("SELECT user FROM usuario WHERE user='$usuario'");
 		    if($check_usuario->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -207,47 +207,48 @@
 
 		    $usuario_datos_reg=[
 				[
-					"campo_nombre"=>"usuario_nombre",
-					"campo_marcador"=>":Nombre",
+					"campo_nombre"=>"nombre",
+					"campo_marcador"=>":nombre",
 					"campo_valor"=>$nombre
 				],
 				[
-					"campo_nombre"=>"usuario_apellido",
-					"campo_marcador"=>":Apellido",
+					"campo_nombre"=>"apepat",
+					"campo_marcador"=>":apepat",
 					"campo_valor"=>$apellido
 				],
 				[
-					"campo_nombre"=>"usuario_usuario",
-					"campo_marcador"=>":Usuario",
+					"campo_nombre"=>"user",
+					"campo_marcador"=>":user",
 					"campo_valor"=>$usuario
 				],
 				[
-					"campo_nombre"=>"usuario_email",
-					"campo_marcador"=>":Email",
+					"campo_nombre"=>"correo",
+					"campo_marcador"=>":correo",
 					"campo_valor"=>$email
 				],
 				[
-					"campo_nombre"=>"usuario_clave",
-					"campo_marcador"=>":Clave",
+					"campo_nombre"=>"password",
+					"campo_marcador"=>":password",
 					"campo_valor"=>$clave
 				],
 				[
-					"campo_nombre"=>"usuario_foto",
-					"campo_marcador"=>":Foto",
+					"campo_nombre"=>"img",
+					"campo_marcador"=>":img",
 					"campo_valor"=>$foto
 				],
 				[
 					"campo_nombre"=>"usuario_creado",
-					"campo_marcador"=>":Creado",
+					"campo_marcador"=>":usuario_creado",
 					"campo_valor"=>date("Y-m-d H:i:s")
 				],
 				[
 					"campo_nombre"=>"usuario_actualizado",
-					"campo_marcador"=>":Actualizado",
+					"campo_marcador"=>":usuario_actualizado",
 					"campo_valor"=>date("Y-m-d H:i:s")
 				]
 			];
 
+			
 			$registrar_usuario=$this->guardarDatos("usuario",$usuario_datos_reg);
 
 			if($registrar_usuario->rowCount()==1){

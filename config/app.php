@@ -1,7 +1,7 @@
 <?php
 
-	const APP_URL="http://localhost/CRUD/";
-	const APP_NAME="CRUD POO MySQL";
+	const APP_URL="http://localhost/fix_care/";
+	const APP_NAME="Fix.Care";
 	const APP_SESSION_NAME="CRUD";
 
 

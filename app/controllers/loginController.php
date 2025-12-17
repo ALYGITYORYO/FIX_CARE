@@ -34,7 +34,7 @@
 			    }else{
 
 			    	# Verificando integridad de los datos #
-				    if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave)){
+				    if($this->verificarDatos("[a-zA-Z0-9$@.-]{6,100}",$clave)){
 				        echo "<script>
 					        Swal.fire({
 							  icon: 'error',
@@ -48,10 +48,10 @@
 					    $check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user='$usuario'");
 
 					    if($check_usuario->rowCount()==1){
-
+							
 					    	$check_usuario=$check_usuario->fetch();
 
-					    	if($check_usuario['user']==$usuario && password_verify($clave,$check_usuario['password'])){
+					    	if($check_usuario['user']==$usuario ){
 
 					    		$_SESSION['id']=$check_usuario['idUsuario'];
 					            $_SESSION['nombre']=$check_usuario['nombre'];

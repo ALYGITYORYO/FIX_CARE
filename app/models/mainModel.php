@@ -85,6 +85,7 @@
 			}
 
 			$query.=")";
+			//echo $query;
 			$sql=$this->conectar()->prepare($query);
 
 			foreach ($datos as $clave){
