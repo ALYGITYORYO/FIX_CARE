@@ -29,11 +29,14 @@
 
   $viewsController= new viewsController();
   $vista=$viewsController->obtenerVistasControlador($url[0]);
-
+  
   if($vista=="login" || $vista=="404"){
+   
     if($vista=="login"){
+        
         if((!isset($_SESSION['id']) || $_SESSION['id']=="") || (!isset($_SESSION['usuario']) || $_SESSION['usuario']=="")){
-            require_once "./app/views/content/".$vista."-view.php";
+            //echo $isset($_SESSION['id']);
+        require_once "./app/views/content/".$vista."-view.php";
            
           }
           else{

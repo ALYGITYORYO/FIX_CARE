@@ -9,7 +9,23 @@
 		/*---------- Modelo obtener vista ----------*/
 		protected function obtenerVistasModelo($vista){
 
-			$listaBlanca=["dashboard","userNew","userList","userUpdate","userSearch","userPhoto","logOut"];
+			//$listaBlanca=["dashboard","userNew","userList","userUpdate","userSearch","userPhoto","logOut"];
+			
+			 $listaBlanca = [];
+    
+			if(isset($_SESSION['menu']) && !empty($_SESSION['menu'])){
+				$menuData = $_SESSION['menu'];
+				
+				if(is_string($menuData)){
+					$menuArray = json_decode($menuData, true);
+				} else {
+					$menuArray = $menuData;
+				}
+				
+				foreach($menuArray as $item){
+					$listaBlanca[] = $item['ruta'];
+				}
+			}
 
 			if(in_array($vista, $listaBlanca)){
 				if(is_file("./app/views/content/".$vista."-view.php")){

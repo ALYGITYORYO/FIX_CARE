@@ -1,6 +1,6 @@
 <?php
 
-	const APP_URL="http://localhost/fix_care/";
+	const APP_URL="http://localhost/FIX_CARE/";
 	const APP_NAME="Fix.Care";
 	const APP_SESSION_NAME="CRUD";
 

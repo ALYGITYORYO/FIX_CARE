@@ -6,7 +6,7 @@
 <!-- ************************ CSS Files ************************************ -->
     <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/animate.css" />
     <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/fonts/bootstrap/bootstrap-icons.css" />
-    <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/main.min.css" />
+    <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/main.min.css?v1.1" />
 
     <!-- ************************* Vendor Css Files ************************* -->
 
@@ -15,3 +15,13 @@
     
 <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/sweetalert2.min.css">
 <script src="<?php echo APP_URL; ?>app/views/js/sweetalert2.all.min.js" ></script>
+    <link href="https://kendo.cdn.telerik.com/themes/12.3.0/default/default-purple.css" rel="stylesheet" />
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- kendo ui -->
+    <script src="<?php echo APP_URL; ?>app/views/js/kendo_v2.js"></script>
+
+
+    <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/kendo1.css">
+    <link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/css/kendo2.css">

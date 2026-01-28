@@ -53,11 +53,12 @@
 
 					    	if($check_usuario['user']==$usuario ){
 
-					    		$_SESSION['id']=$check_usuario['idUsuario'];
+					    		$_SESSION['id']=$check_usuario['id'];
 					            $_SESSION['nombre']=$check_usuario['nombre'];
 					            $_SESSION['apellido']=$check_usuario['apepat'];
 					            $_SESSION['usuario']=$check_usuario['user'];
 					            $_SESSION['foto']=$check_usuario['img'];
+					            $_SESSION['menu']=$check_usuario['menu'];
 
 
 					            if(headers_sent()){

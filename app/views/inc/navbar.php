@@ -2,337 +2,31 @@
           <!-- Sidebar menu starts -->
           <div class="sidebarMenuScroll">
             <ul class="sidebar-menu">
-              <li>
-                <a href="index.html">
-                  <i class="bi bi-truck-front"></i>
-                  <span class="menu-text">Logistics</span>
+
+            <?php
+            if(isset($_SESSION['menu']) && !empty($_SESSION['menu'])){
+				$menuData = $_SESSION['menu'];
+				
+				if(is_string($menuData)){
+					$menuArray = json_decode($menuData, true);
+				} else {
+					$menuArray = $menuData;
+				}
+				
+				foreach($menuArray as $item){
+					$listaBlanca[] = $item['ruta'];
+          if(isset($item['ruta']) && isset($item['icono']) && isset($item['nombre'])){
+          echo '<li>
+                <a href="'.APP_URL.$item['ruta'].'/">
+                  <i class="'.$item['icono'].'"></i>
+                  <span class="menu-text">'.$item['nombre'].'</span>
                 </a>
-              </li>
-              <li>
-                <a href="order-management.html">
-                  <i class="bi bi-truck"></i>
-                  <span class="menu-text">Order Management</span>
-                </a>
-              </li>
-              <li>
-                <a href="fleet-management.html">
-                  <i class="bi bi-car-front"></i>
-                  <span class="menu-text">Fleet Management</span>
-                </a>
-              </li>
-              <li>
-                <a href="warehouse-inventory.html">
-                  <i class="bi bi-box-seam"></i>
-                  <span class="menu-text">Warehouse Inventory</span>
-                </a>
-              </li>
-              <li>
-                <a href="dashboard.html">
-                  <i class="bi bi-tv"></i>
-                  <span class="menu-text">Orders & Income</span>
-                </a>
-              </li>
-              <li>
-                <a href="reports.html">
-                  <i class="bi bi-radar"></i>
-                  <span class="menu-text">Reports</span>
-                </a>
-              </li>
-              <li>
-                <a href="widgets.html">
-                  <i class="bi bi-dpad"></i>
-                  <span class="menu-text">Widgets</span>
-                </a>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-flower1"></i>
-                  <span class="menu-text">Components</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="accordions.html">Accordions</a>
-                  </li>
-                  <li>
-                    <a href="alerts.html">Alerts</a>
-                  </li>
-                  <li>
-                    <a href="buttons.html">Buttons</a>
-                  </li>
-                  <li>
-                    <a href="badges.html">Badges</a>
-                  </li>
-                  <li>
-                    <a href="carousel.html">Carousel</a>
-                  </li>
-                  <li>
-                    <a href="dropdowns.html">Dropdowns</a>
-                  </li>
-                  <li>
-                    <a href="list-items.html">List Items</a>
-                  </li>
-                  <li>
-                    <a href="progress.html">Progress Bars</a>
-                  </li>
-                  <li>
-                    <a href="popovers.html">Popovers</a>
-                  </li>
-                  <li>
-                    <a href="placeholders.html">Placeholders</a>
-                  </li>
-                  <li>
-                    <a href="spinners.html">Spinners</a>
-                  </li>
-                  <li>
-                    <a href="tooltips.html">Tooltips</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-ui-checks-grid"></i>
-                  <span class="menu-text">Forms</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="form-inputs.html">Form Inputs</a>
-                  </li>
-                  <li>
-                    <a href="form-checkbox-radio.html">Checkbox &amp; Radio</a>
-                  </li>
-                  <li>
-                    <a href="form-file-input.html">File Input</a>
-                  </li>
-                  <li>
-                    <a href="form-validations.html">Validations</a>
-                  </li>
-                  <li>
-                    <a href="date-time-pickers.html">Date Time Pickers</a>
-                  </li>
-                  <li>
-                    <a href="form-layouts.html">Form Layouts</a>
-                  </li>
-                  <li>
-                    <a href="input-masks.html">Input Masks</a>
-                  </li>
-                  <li>
-                    <a href="input-tags.html">Input Tags</a>
-                  </li>
-                  <li>
-                    <a href="form-bs-select.html">BS Select</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="editor.html">
-                  <i class="bi bi-terminal-split"></i>
-                  <span class="menu-text">Editor</span>
-                </a>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-window-sidebar"></i>
-                  <span class="menu-text">Invoices</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="create-invoice.html">Create Invoice</a>
-                  </li>
-                  <li>
-                    <a href="view-invoice.html">View Invoice</a>
-                  </li>
-                  <li>
-                    <a href="invoice-list.html">Invoice List</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-calendar4"></i>
-                  <span class="menu-text">Calendars</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="calendar.html">Day Grid View</a>
-                  </li>
-                  <li>
-                    <a href="calendar-external-draggable.html">External Draggable</a>
-                  </li>
-                  <li>
-                    <a href="calendar-google.html">Google Calendar</a>
-                  </li>
-                  <li>
-                    <a href="calendar-list-view.html">List View</a>
-                  </li>
-                  <li>
-                    <a href="calendar-selectable.html">Selectable</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="tables.html">
-                  <i class="bi bi-border-all"></i>
-                  <span class="menu-text">Tables</span>
-                </a>
-              </li>
-              <li>
-                <a href="subscribers.html">
-                  <i class="bi bi-globe"></i>
-                  <span class="menu-text">Subscribers</span>
-                </a>
-              </li>
-              <li>
-                <a href="contacts.html">
-                  <i class="bi bi-robot"></i>
-                  <span class="menu-text">Contacts</span>
-                </a>
-              </li>
-              <li>
-                <a href="settings.html">
-                  <i class="bi bi-gear"></i>
-                  <span class="menu-text">Settings</span>
-                </a>
-              </li>
-              <li>
-                <a href="profile.html">
-                  <i class="bi bi-cup-hot"></i>
-                  <span class="menu-text">Profile</span>
-                </a>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-code-square"></i>
-                  <span class="menu-text">Cards</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="cards.html">Cards</a>
-                  </li>
-                  <li>
-                    <a href="advanced-cards.html">Advanced Cards</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-pie-chart"></i>
-                  <span class="menu-text">Graphs</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="apex.html">Apex</a>
-                  </li>
-                  <li>
-                    <a href="morris.html">Morris</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="maps.html">
-                  <i class="bi bi-pin-map"></i>
-                  <span class="menu-text">Maps</span>
-                </a>
-              </li>
-              <li>
-                <a href="tabs.html">
-                  <i class="bi bi-slash-square"></i>
-                  <span class="menu-text">Tabs</span>
-                </a>
-              </li>
-              <li>
-                <a href="modals.html">
-                  <i class="bi bi-terminal"></i>
-                  <span class="menu-text">Modals</span>
-                </a>
-              </li>
-              <li>
-                <a href="icons.html">
-                  <i class="bi bi-textarea"></i>
-                  <span class="menu-text">Icons</span>
-                </a>
-              </li>
-              <li>
-                <a href="typography.html">
-                  <i class="bi bi-body-text"></i>
-                  <span class="menu-text">Typography</span>
-                </a>
-              </li>
-              <li class="active current-page">
-                <a href="starter-page.html">
-                  <i class="bi bi-layout-sidebar"></i>
-                  <span class="menu-text">Starter Page</span>
-                </a>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-upc-scan"></i>
-                  <span class="menu-text">Login/Signup</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="login.html">Login</a>
-                  </li>
-                  <li>
-                    <a href="signup.html">Signup</a>
-                  </li>
-                  <li>
-                    <a href="forgot-password.html">Forgot Password</a>
-                  </li>
-                  <li>
-                    <a href="reset-password.html">Reset Password</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="page-not-found.html">
-                  <i class="bi bi-exclamation-diamond"></i>
-                  <span class="menu-text">Page Not Found</span>
-                </a>
-              </li>
-              <li>
-                <a href="maintenance.html">
-                  <i class="bi bi-exclamation-octagon"></i>
-                  <span class="menu-text">Maintenance</span>
-                </a>
-              </li>
-              <li class="treeview">
-                <a href="starter-page.html#!">
-                  <i class="bi bi-code-square"></i>
-                  <span class="menu-text">Multi Level</span>
-                </a>
-                <ul class="treeview-menu">
-                  <li>
-                    <a href="starter-page.html#!">Level One Link</a>
-                  </li>
-                  <li>
-                    <a href="starter-page.html#!">
-                      Level One Menu
-                      <i class="bi bi-chevron-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                      <li>
-                        <a href="starter-page.html#!">Level Two Link</a>
-                      </li>
-                      <li>
-                        <a href="starter-page.html#!">Level Two Menu
-                          <i class="bi bi-chevron-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                          <li>
-                            <a href="starter-page.html#!">Level Three Link</a>
-                          </li>
-                          <li>
-                            <a href="starter-page.html#!">Level Three Link</a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    <a href="starter-page.html#!">Level One Link</a>
-                  </li>
-                </ul>
-              </li>
+              </li>';
+				}
+			}
+      }
+      ?>
+            
             </ul>
           </div>
           <!-- Sidebar menu ends -->
@@ -360,7 +54,7 @@
             <!-- App brand sm start -->
             <div class="app-brand-sm d-lg-none d-sm-block">
               <a href="index.html">
-                <img src="assets/images/logo-sm.svg" class="logo"
+                <img src="<?php echo APP_URL; ?>app/views/img/logo.png" class="logo"
                   alt="Admin Dashboard with real-time analytics and user management">
               </a>
             </div>
@@ -370,14 +64,7 @@
             <div class="header-actions">
               <div class="d-lg-block d-none">
 
-                <!-- Search container start -->
-                <div class="input-group">
-                  <input type="text" class="form-control" id="search" placeholder="Search" />
-                  <button class="btn btn-outline-dark" type="button">
-                    <i class="bi bi-search"></i>
-                  </button>
-                </div>
-                <!-- Search container end -->
+               
 
               </div>
               <!-- Header actions starts -->
@@ -470,7 +157,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end shadow">
                   <div class="p-2 mb-2 text-center border-bottom border-light">
-                    <h6 class="mb-1">Danielle Garner
+                    <h6 class="mb-1"><?= $_SESSION['nombre']; ?>
                     </h6>
                     <p class="m-0 text-muted small">Executive Director</p>
                   </div>
@@ -503,7 +190,7 @@
 
             <!-- Page Title start -->
             <div>
-              <h5 class="fw-light">Hello David,</h5>
+              <h5 class="fw-light">Hola <?= $_SESSION['nombre']; ?>,</h5>
               <h3 class="fw-light">
                 <span>Home</span> / <span class="menu-text">Starter Page</span>
               </h3>
