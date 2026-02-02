@@ -421,6 +421,12 @@
 			return $tabla;
 		}
 
+		public function obtenerUsuariosControlador(){
+			$consulta_datos="SELECT * FROM `usuario`";
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return json_encode($datos);
+		}
 
 		/*----------  Controlador eliminar usuario  ----------*/
 		public function eliminarUsuarioControlador(){

@@ -41,381 +41,398 @@
                                 <div class="table-responsive">
                                     <div id="example">
                                         <div id="grid"></div>
+                                       
                                         <script>
-                                        $(document).ready(function() {
-                                            var crudServiceBaseUrl =
-                                                "https://demos.telerik.com/service/v2/core",
-                                                dataSource = new kendo.data.DataSource({
-                                                    transport: {
-                                                        read: {
-                                                            url: crudServiceBaseUrl + "/detailproducts"
-                                                        },
-                                                        update: {
-                                                            url: crudServiceBaseUrl +
-                                                                "/detailproducts/Update",
-                                                            type: "POST",
-                                                            contentType: "application/json"
-                                                        },
-                                                        destroy: {
-                                                            url: crudServiceBaseUrl +
-                                                                "/detailproducts/Destroy",
-                                                            type: "POST",
-                                                            contentType: "application/json"
-                                                        },
-                                                        parameterMap: function(options, operation) {
-                                                            if (operation !== "read" && options
-                                                                .models) {
-                                                                return kendo.stringify(options.models);
-                                                            }
-                                                        }
-                                                    },
-                                                    batch: true,
-                                                    pageSize: 20,
-                                                    autoSync: true,
-                                                    aggregate: [{
-                                                        field: "TotalSales",
-                                                        aggregate: "sum"
-                                                    }],
-                                                    group: {
-                                                        field: "Category.CategoryName",
-                                                        dir: "desc",
-                                                        aggregates: [{
-                                                            field: "TotalSales",
-                                                            aggregate: "sum"
-                                                        }]
-                                                    },
-                                                    schema: {
-                                                        model: {
-                                                            id: "ProductID",
-                                                            fields: {
-                                                                ProductID: {
-                                                                    editable: false,
-                                                                    nullable: true
-                                                                },
-                                                                Discontinued: {
-                                                                    type: "boolean",
-                                                                    editable: false
-                                                                },
-                                                                TotalSales: {
-                                                                    type: "number",
-                                                                    editable: false
-                                                                },
-                                                                TargetSales: {
-                                                                    type: "number",
-                                                                    editable: false
-                                                                },
-                                                                LastSupply: {
-                                                                    type: "date"
-                                                                },
-                                                                UnitPrice: {
-                                                                    type: "number"
-                                                                },
-                                                                UnitsInStock: {
-                                                                    type: "number"
-                                                                },
-                                                                Category: {
-                                                                    defaultValue: {
-                                                                        CategoryID: 8,
-                                                                        CategoryName: "Seafood"
-                                                                    }
-                                                                },
-                                                                Country: {
-                                                                    defaultValue: {
-                                                                        CountryNameLong: "Bulgaria",
-                                                                        CountryNameShort: "bg"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                });
+$(document).ready(function() {
+    // Función para cargar usuarios
+    async function cargarUsuarios() {
+        try {
+            const response = await fetch('<?=APP_URL; ?>app/ajax/usuarioAjax.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'modulo_usuario=obtener_usuarios'
+            });
+            
+            const usuarios = await response.json();
+            console.log('Usuarios cargados:', usuarios);
+            
+            // Crear DataSource con los usuarios recibidos
+            crearGridUsuarios(usuarios);
+            
+        } catch (error) {
+            console.error('Error al cargar usuarios:', error);
+            crearGridUsuarios([]);
+        }
+    }
 
-                                            $("#grid").kendoGrid({
-                                                dataSource: dataSource,
-                                                columnMenu: {
-                                                    filterable: false
-                                                },
-                                                height: 680,
-                                                editable: "incell",
-                                                pageable: true,
-                                                sortable: true,
-                                                navigatable: true,
-                                                resizable: true,
-                                                reorderable: true,
-                                                groupable: true,
-                                                filterable: true,
-                                                dataBound: onDataBound,
-                                                toolbar: ["excel", "pdf", "search"],
-                                                columns: [{
-                                                        selectable: true,
-                                                        width: 75,
-                                                        attributes: {
-                                                            "class": "checkbox-align",
-                                                        },
-                                                        headerAttributes: {
-                                                            "class": "checkbox-align",
-                                                        }
-                                                    }, {
-                                                        field: "ProductName",
-                                                        title: "Product Name",
-                                                        template: "<div class='product-photo' style='background-image: url(../content/web/foods/#:data.ProductID#.jpg);'></div><div class='product-name'>#: ProductName #</div>",
-                                                        width: 300
-                                                    }, {
-                                                        field: "UnitPrice",
-                                                        title: "Price",
-                                                        format: "{0:c}",
-                                                        width: 105
-                                                    }, {
-                                                        field: "Discontinued",
-                                                        title: "In Stock",
-                                                        template: "<span id='badge_#=ProductID#' class='badgeTemplate'></span>",
-                                                        width: 130,
-                                                    }, {
-                                                        field: "Category.CategoryName",
-                                                        title: "Category",
-                                                        editor: clientCategoryEditor,
-                                                        groupHeaderTemplate: "Category: #=data.value#, Total Sales: #=kendo.format('{0:c}', aggregates.TotalSales.sum)#",
-                                                        width: 125
-                                                    }, {
-                                                        field: "CustomerRating",
-                                                        title: "Rating",
-                                                        template: "<input id='rating_#=ProductID#' data-bind='value: CustomerRating' class='rating'/>",
-                                                        editable: returnFalse,
-                                                        width: 200
-                                                    }, {
-                                                        field: "Country.CountryNameLong",
-                                                        title: "Country",
-                                                        template: "<div class='k-text-center'><img src='../content/web/country-flags/#:data.Country.CountryNameShort#.png' alt='Kendo UI for jQuery Grid #: data.Country.CountryNameLong# Flag' title='#: data.Country.CountryNameLong#' width='30' /></div>",
-                                                        editor: clientCountryEditor,
-                                                        width: 120
-                                                    }, {
-                                                        field: "UnitsInStock",
-                                                        title: "Units",
-                                                        width: 105
-                                                    }, {
-                                                        field: "TotalSales",
-                                                        title: "Total Sales",
-                                                        format: "{0:c}",
-                                                        width: 140,
-                                                        aggregates: ["sum"],
-                                                    }, {
-                                                        field: "TargetSales",
-                                                        title: "Target Sales",
-                                                        format: "{0:c}",
-                                                        template: "<span id='chart_#= ProductID#' class='sparkline-chart'></span>",
-                                                        width: 220
-                                                    },
-                                                    {
-                                                        command: "destroy",
-                                                        title: "&nbsp;",
-                                                        width: 120
-                                                    }
-                                                ],
-                                            });
-                                        });
+    // Función para crear el grid con los usuarios
+    function crearGridUsuarios(usuarios) {
+        if ($("#grid").data("kendoGrid")) {
+            $("#grid").data("kendoGrid").destroy();
+            $("#grid").empty();
+        }
 
-                                        function onDataBound(e) {
-                                            var grid = this;
-                                            grid.table.find("tr").each(function() {
-                                                var dataItem = grid.dataItem(this);
-                                                var themeColor = dataItem.Discontinued ? 'success' : 'error';
-                                                var text = dataItem.Discontinued ? 'available' :
-                                                'not available';
+        var usuariosDataSource = new kendo.data.DataSource({
+            data: usuarios,
+            pageSize: 10,
+            schema: {
+                model: {
+                    id: "id",
+                    fields: {
+                        id: { type: "number", editable: false },
+                        rol: { type: "string" },
+                        nombre: { type: "string" },
+                        apepat: { type: "string" },
+                        apemat: { type: "string" },
+                        correo: { type: "string" },
+                        cel: { type: "string" },
+                        user: { type: "string" },
+                        img: { type: "string" },
+                        usuario_creado: { type: "date" },
+                        usuario_actualizado: { type: "date" }
+                    }
+                }
+            }
+        });
 
-                                                $(this).find(".badgeTemplate").kendoBadge({
-                                                    themeColor: themeColor,
-                                                    text: text,
-                                                });
+        // Crear el grid con columnas que se autoajustan
+        $("#grid").kendoGrid({
+            dataSource: usuariosDataSource,
+            columnMenu: true,
+            height: 600,
+            scrollable: true,
+            pageable: {
+                refresh: true,
+                pageSizes: [10, 20, 50, "Todos"],
+                buttonCount: 5
+            },
+            sortable: true,
+            filterable: true,
+            resizable: true,
+            reorderable: true,
+            toolbar: ["excel", "pdf", "search"],
+            columns: [
+                {
+                    field: "img",
+                    title: "Foto",
+                    width: "80px",
+                    template: function(dataItem) {
+                        if (dataItem.img && dataItem.img !== "") {
+                            return '<div class="text-center">' +
+                                   '<img src="<?=APP_URL; ?>app/views/fotos/' + dataItem.img + 
+                                   '" alt="' + dataItem.nombre + '" style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%;">' +
+                                   '</div>';
+                        } else {
+                            return '<div class="text-center">' +
+                                   '<i class="fas fa-user-circle fa-2x text-muted"></i>' +
+                                   '</div>';
+                        }
+                    },
+                    attributes: { "class": "text-center" },
+                    filterable: false,
+                    sortable: false
+                },
+                {
+                    field: "nombre_completo",
+                    title: "Nombre",
+                    width: "200px",
+                    template: function(dataItem) {
+                        return '<div>' +
+                               '<strong>' + dataItem.nombre + ' ' + dataItem.apepat + '</strong>' +
+                               '<div class="text-muted small">' + dataItem.apemat + '</div>' +
+                               '</div>';
+                    },
+                    filterable: {
+                        multi: true,
+                        search: true
+                    }
+                },
+                {
+                    field: "correo",
+                    title: "Correo",
+                    width: "220px",
+                    template: function(dataItem) {
+                        return '<a href="mailto:' + dataItem.correo + '" class="text-primary text-truncate d-block">' + 
+                               dataItem.correo + '</a>';
+                    },
+                    filterable: {
+                        multi: true,
+                        search: true
+                    }
+                },
+                {
+                    field: "cel",
+                    title: "Teléfono",
+                    width: "130px",
+                    template: function(dataItem) {
+                        return dataItem.cel || '<span class="text-muted">No registrado</span>';
+                    }
+                },
+                {
+                    field: "rol",
+                    title: "Rol",
+                    width: "100px",
+                    template: function(dataItem) {
+                        var badgeClass = {
+                            'admin': 'danger',
+                            'editor': 'warning',
+                            'usuario': 'primary',
+                            'invitado': 'secondary'
+                        }[dataItem.rol] || 'secondary';
+                        
+                        return '<span class="badge bg-' + badgeClass + '">' + 
+                               dataItem.rol + '</span>';
+                    },
+                    filterable: {
+                        multi: true
+                    }
+                },
+                {
+                    field: "usuario_actualizado",
+                    title: "Último Ingreso",
+                    width: "150px",
+                    format: "{0:dd/MM/yyyy HH:mm}",
+                    template: function(dataItem) {
+                        if (dataItem.usuario_actualizado) {
+                            var fecha = new Date(dataItem.usuario_actualizado);
+                            var ahora = new Date();
+                            var diferencia = ahora - fecha;
+                            var horas = Math.floor(diferencia / (1000 * 60 * 60));
+                            
+                            var texto = kendo.toString(fecha, "dd/MM/yyyy HH:mm");
+                            var tooltip = "";
+                            
+                            if (horas < 1) {
+                                tooltip = "Hace menos de 1 hora";
+                            } else if (horas < 24) {
+                                tooltip = "Hace " + horas + " horas";
+                            } else {
+                                var dias = Math.floor(horas / 24);
+                                tooltip = "Hace " + dias + " días";
+                            }
+                            
+                            return '<span title="' + tooltip + '" class="text-nowrap">' + texto + '</span>';
+                        }
+                        return '<span class="text-muted">Nunca</span>';
+                    },
+                    filterable: {
+                        ui: "datetimepicker"
+                    }
+                },
+                {
+                    field: "estatus",
+                    title: "Estatus",
+                    width: "110px",
+                    template: function(dataItem) {
+                        if (!dataItem.usuario_actualizado) {
+                            return '<span class="badge bg-secondary">Inactivo</span>';
+                        }
+                        
+                        var fecha = new Date(dataItem.usuario_actualizado);
+                        var ahora = new Date();
+                        var diferencia = ahora - fecha;
+                        var horas = Math.floor(diferencia / (1000 * 60 * 60));
+                        
+                        if (horas < 1) {
+                            return '<span class="badge bg-success">En línea</span>';
+                        } else if (horas < 24) {
+                            return '<span class="badge bg-info">Activo hoy</span>';
+                        } else if (horas < 168) {
+                            return '<span class="badge bg-warning">Reciente</span>';
+                        } else {
+                            return '<span class="badge bg-secondary">Inactivo</span>';
+                        }
+                    },
+                    filterable: {
+                        multi: true
+                    }
+                },
+                {
+                    title: "Acciones",
+                    width: "140px",
+                    template: function(dataItem) {
+                        return '<div class="d-flex justify-content-center gap-1">' +
+                               '<button class="btn btn-sm btn-outline-primary btn-editar" data-id="' + dataItem.id + '" title="Editar">' +
+                               '<i class="fas fa-edit"></i>' +
+                               '</button>' +
+                               '<button class="btn btn-sm btn-outline-info btn-ver" data-id="' + dataItem.id + '" title="Ver">' +
+                               '<i class="fas fa-eye"></i>' +
+                               '</button>' +
+                               '<button class="btn btn-sm btn-outline-danger btn-eliminar" data-id="' + dataItem.id + '" title="Eliminar">' +
+                               '<i class="fas fa-trash"></i>' +
+                               '</button>' +
+                               '</div>';
+                    },
+                    attributes: { "class": "text-center" },
+                    filterable: false,
+                    sortable: false
+                }
+            ],
+            dataBound: function(e) {
+                // Agregar eventos a los botones
+                $(".btn-editar").click(function() {
+                    var id = $(this).data("id");
+                    editarUsuario(id);
+                });
+                
+                $(".btn-ver").click(function() {
+                    var id = $(this).data("id");
+                    verUsuario(id);
+                });
+                
+                $(".btn-eliminar").click(function() {
+                    var id = $(this).data("id");
+                    eliminarUsuario(id);
+                });
+                
+                // Actualizar contador
+                var total = this.dataSource.total();
+                $("#contadorUsuarios").text(total + " usuarios");
+                
+                // Ajustar automáticamente el ancho de las columnas
+                this.resize();
+            },
+            resize: function(e) {
+                // Ajustar columnas al cambiar tamaño
+                var grid = e.sender;
+                grid.resize();
+            }
+        });
+    }
 
-                                                $(this).find(".rating").kendoRating({
-                                                    min: 1,
-                                                    max: 5,
-                                                    label: false,
-                                                    value: dataItem.CustomerRating,
-                                                    selection: "continuous"
-                                                });
+    // Funciones de acción
+    function editarUsuario(id) {
+        console.log("Editar usuario ID:", id);
+        // Implementar edición
+    }
 
-                                                $(this).find(".sparkline-chart").kendoSparkline({
-                                                    legend: {
-                                                        visible: false
-                                                    },
-                                                    data: [dataItem.TargetSales],
-                                                    type: "bar",
-                                                    chartArea: {
-                                                        margin: 0,
-                                                        width: 180,
-                                                        background: "transparent"
-                                                    },
-                                                    seriesDefaults: {
-                                                        labels: {
-                                                            visible: true,
-                                                            format: '{0}%',
-                                                            background: 'none'
-                                                        }
-                                                    },
-                                                    categoryAxis: {
-                                                        majorGridLines: {
-                                                            visible: false
-                                                        },
-                                                        majorTicks: {
-                                                            visible: false
-                                                        }
-                                                    },
-                                                    valueAxis: {
-                                                        type: "numeric",
-                                                        min: 0,
-                                                        max: 130,
-                                                        visible: false,
-                                                        labels: {
-                                                            visible: false
-                                                        },
-                                                        minorTicks: {
-                                                            visible: false
-                                                        },
-                                                        majorGridLines: {
-                                                            visible: false
-                                                        }
-                                                    },
-                                                    tooltip: {
-                                                        visible: false
-                                                    }
-                                                });
+    function verUsuario(id) {
+        console.log("Ver usuario ID:", id);
+        // Implementar visualización
+    }
 
-                                                kendo.bind($(this), dataItem);
-                                            });
-                                        }
+    function eliminarUsuario(id) {
+        if (confirm("¿Está seguro de eliminar este usuario?")) {
+            console.log("Eliminar usuario ID:", id);
+            // Implementar eliminación
+        }
+    }
 
-                                        function returnFalse() {
-                                            return false;
-                                        }
+    // Recargar usuarios
+    $("#btnRecargarUsuarios").click(function() {
+        cargarUsuarios();
+    });
 
-                                        function clientCategoryEditor(container, options) {
-                                            $('<input required name="Category">')
-                                                .appendTo(container)
-                                                .kendoDropDownList({
-                                                    autoBind: false,
-                                                    dataTextField: "CategoryName",
-                                                    dataValueField: "CategoryID",
-                                                    dataSource: {
-                                                        data: categories
-                                                    }
-                                                });
-                                        }
+    // Ajustar grid al cambiar tamaño de ventana
+    $(window).resize(function() {
+        var grid = $("#grid").data("kendoGrid");
+        if (grid) {
+            grid.resize();
+        }
+    });
 
-                                        function clientCountryEditor(container, options) {
-                                            $('<input required name="Country">')
-                                                .appendTo(container)
-                                                .kendoDropDownList({
-                                                    dataTextField: "CountryNameLong",
-                                                    dataValueField: "CountryNameShort",
-                                                    template: "<div class='dropdown-country-wrap'><img src='../content/web/country-flags/#:CountryNameShort#.png' alt='Kendo UI for jQuery Grid #: CountryNameLong# Flag' title='#: CountryNameLong#' width='30' /><span>#:CountryNameLong #</span></div>",
-                                                    dataSource: {
-                                                        transport: {
-                                                            read: {
-                                                                url: " https://demos.telerik.com/service/v2/core/countries"
-                                                            }
-                                                        }
-                                                    },
-                                                    autoWidth: true
-                                                });
-                                        }
+    // Inicializar
+    cargarUsuarios();
+});
+</script>
 
-                                        var categories = [{
-                                            "CategoryID": 1,
-                                            "CategoryName": "Beverages"
-                                        }, {
-                                            "CategoryID": 2,
-                                            "CategoryName": "Condiments"
-                                        }, {
-                                            "CategoryID": 3,
-                                            "CategoryName": "Confections"
-                                        }, {
-                                            "CategoryID": 4,
-                                            "CategoryName": "Dairy Products"
-                                        }, {
-                                            "CategoryID": 5,
-                                            "CategoryName": "Grains/Cereals"
-                                        }, {
-                                            "CategoryID": 6,
-                                            "CategoryName": "Meat/Poultry"
-                                        }, {
-                                            "CategoryID": 7,
-                                            "CategoryName": "Produce"
-                                        }, {
-                                            "CategoryID": 8,
-                                            "CategoryName": "Seafood"
-                                        }];
-                                        </script>
-                                        <style type="text/css">
-                                        .customer-photo {
-                                            display: inline-block;
-                                            width: 32px;
-                                            height: 32px;
-                                            border-radius: 50%;
-                                            background-size: 32px 35px;
-                                            background-position: center center;
-                                            vertical-align: middle;
-                                            line-height: 32px;
-                                            box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0, 0, 0, .2);
-                                            margin-left: 5px;
-                                        }
+<style>
+/* Estilos para el grid */
+#grid {
+    font-size: 14px;
+}
 
-                                        .customer-name {
-                                            display: inline-block;
-                                            vertical-align: middle;
-                                            line-height: 32px;
-                                            padding-left: 3px;
-                                        }
+.k-grid-header th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    white-space: nowrap;
+}
 
-                                        .k-grid tr .checkbox-align {
-                                            text-align: center;
-                                            vertical-align: middle;
-                                        }
+.k-grid-content td {
+    vertical-align: middle;
+    padding: 8px 12px;
+}
 
-                                        .product-photo {
-                                            display: inline-block;
-                                            width: 32px;
-                                            height: 32px;
-                                            border-radius: 50%;
-                                            background-size: 32px 35px;
-                                            background-position: center center;
-                                            vertical-align: middle;
-                                            line-height: 32px;
-                                            box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0, 0, 0, .2);
-                                            margin-right: 5px;
-                                        }
+/* Asegurar que el contenido no se desborde */
+.k-grid-content .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-                                        .product-name {
-                                            display: inline-block;
-                                            vertical-align: middle;
-                                            line-height: 32px;
-                                            padding-left: 3px;
-                                        }
+/* Botones de acción */
+.btn-sm {
+    padding: 0.25rem 0.4rem;
+    font-size: 12px;
+    min-width: 32px;
+}
 
-                                        .k-rating-container .k-rating-item {
-                                            padding: 4px 0;
-                                        }
+/* Badges */
+.badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 0.25em 0.6em;
+}
 
-                                        .k-rating-container .k-rating-item .k-icon {
-                                            font-size: 16px;
-                                        }
+/* Fotos de usuario */
+.k-grid img {
+    border: 2px solid #e9ecef;
+}
 
-                                        .dropdown-country-wrap {
-                                            display: flex;
-                                            flex-wrap: nowrap;
-                                            align-items: center;
-                                            white-space: nowrap;
-                                        }
+/* Contador */
+#contadorUsuarios {
+    font-size: 14px;
+    font-weight: 500;
+}
 
-                                        .dropdown-country-wrap img {
-                                            margin-right: 10px;
-                                        }
+/* Hover en filas */
+.k-grid tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
 
-                                        #grid .k-grid-edit-row>td>.k-rating {
-                                            margin-left: 0;
-                                            width: 100%;
-                                        }
-                                        </style>
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .k-grid {
+        font-size: 13px;
+    }
+    
+    .k-grid .btn-sm {
+        min-width: 28px;
+        padding: 0.2rem 0.3rem;
+    }
+    
+    .badge {
+        font-size: 10px;
+        padding: 0.2em 0.5em;
+    }
+}
+</style>
+
+<!-- HTML mejorado -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0 d-flex align-items-center">
+        <i class="fas fa-users me-2"></i>
+        Usuarios Registrados
+    </h5>
+    <div class="d-flex align-items-center">
+        <span id="contadorUsuarios" class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+            <i class="fas fa-spinner fa-spin me-1"></i> Cargando...
+        </span>
+        <button id="btnRecargarUsuarios" class="btn btn-sm btn-outline-primary ms-2">
+            <i class="fas fa-sync-alt"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Grid con contenedor responsivo -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div id="grid" class="w-100"></div>
+    </div>
+</div>
                                     </div>
                                 </div>
                             </div>
