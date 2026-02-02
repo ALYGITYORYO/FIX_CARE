@@ -172,7 +172,7 @@
                     </div>
                     Account Settings
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="login.html">
+                  <a class="dropdown-item d-flex align-items-center" href="<?php echo APP_URL."logOut/"; ?>" id="btn_exit">
                     <div class="icon-box sm rounded-5 bg-success-subtle me-2">
                       <i class="bi bi-escape"></i>
                     </div>Logout
@@ -188,16 +188,23 @@
           <!-- App hero header starts -->
           <div class="app-hero-header">
 
+           
+
+
             <!-- Page Title start -->
-            <div>
-              <h5 class="fw-light">Hola <?= $_SESSION['nombre']; ?>,</h5>
-              <h3 class="fw-light">
-                <span>Home</span> / <span class="menu-text">Starter Page</span>
-              </h3>
+            <div class="d-flex gap-3">
+              <img src="<?= APP_URL; ?>app/views/img/iconos/usuarios.png" class="img-4x" alt="Logistics Dashboard" />
+              <div class="m-0">
+              <h5 class="fw-light">Hola <?= $_SESSION['nombre']; ?></h5>
+                <h3 class="fw-light">
+                  <span><?=$url[0] ?></span>
+                </h3>
+              </div>
             </div>
             <!-- Page Title end -->
 
-            <!-- Header graphs start -->
+
+           <!-- Header graphs start -->
             <div class="ms-auto">
               <div class="d-lg-flex d-none gap-4">
                 <div class="d-flex align-items-center">
