@@ -1,20 +1,25 @@
-body,html{
-    height: 100%;
-    width: 100%;
-}
 
-.main-container{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+   .demo-section label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        display: inline-block;
+    }
 
-.main-container > .login,
-.main-container > .hero-body{
-    height: auto;
-    width: 100%;
-    max-width: 400px;
-    min-width: 300px;
-}
+    #employees {
+        width: 270px;
+    }
+
+    #example .demo-section {
+        max-width: none;
+        width: 600px;
+    }
+
+    #example .k-listbox {
+        width: 236px;
+        height: 350px;
+    }
+
+    #example .k-listbox:first-of-type {
+        width: 270px;
+        margin-right: 1px;
+    }

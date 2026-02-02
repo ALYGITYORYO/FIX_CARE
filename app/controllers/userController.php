@@ -9,21 +9,23 @@
 		public function registrarUsuarioControlador(){
 
 			# Almacenando datos#
-		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
-		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
-
-		    $usuario=$this->limpiarCadena($_POST['usuario_usuario']);
-		    $email=$this->limpiarCadena($_POST['usuario_email']);
-		    $clave1=$this->limpiarCadena($_POST['usuario_clave_1']);
-		    $clave2=$this->limpiarCadena($_POST['usuario_clave_2']);
-
+		    $nombre = $this->limpiarCadena($_POST['usuario_nombre']);
+            $apepat = $this->limpiarCadena($_POST['apepat']);
+            $apemat = $this->limpiarCadena($_POST['apemat']);
+            $usuario = $this->limpiarCadena($_POST['usuario_usuario']);
+            $correo = isset($_POST['usuario_email']) ? $this->limpiarCadena($_POST['usuario_email']) : '';
+            $celular = isset($_POST['usuario_cel']) ? $this->limpiarCadena($_POST['usuario_cel']) : '';
+            $clave1 = $_POST['usuario_clave_1'];
+            $clave2 = $_POST['usuario_clave_2'];
+            $rol = $this->limpiarCadena($_POST['usuario_rol']);
+           	$menu=$this->limpiarCadena($_POST['usuario_menu']);
 
 		    # Verificando campos obligatorios #
-		    if($nombre=="" || $apellido=="" || $usuario=="" || $clave1=="" || $clave2==""){
+		    if($nombre=="" || $apepat=="" || $apemat=="" || $usuario=="" || $clave1=="" || $clave2=="" || $rol=="" || $correo=="" || $celular==""){
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado campos que son obligatorios",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -42,7 +44,7 @@
 		        exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apellido)){
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apepat)){
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -130,7 +132,7 @@
 
 		    # Directorio de imagenes #
     		$img_dir="../views/fotos/";
-
+			
     		# Comprobar si se selecciono una imagen #
     		if($_FILES['usuario_foto']['name']!="" && $_FILES['usuario_foto']['size']>0){
 
@@ -187,7 +189,7 @@
 		        }
 
 		        chmod($img_dir,0777);
-
+				 
 		        # Moviendo imagen al directorio #
 		        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
 		        	$alerta=[
@@ -203,19 +205,39 @@
     		}else{
     			$foto="";
     		}
+			$menu_json="";
 
-
-		    $usuario_datos_reg=[
+			$usuario_datos_reg=[
 				[
 					"campo_nombre"=>"nombre",
 					"campo_marcador"=>":nombre",
 					"campo_valor"=>$nombre
 				],
 				[
+                    "campo_nombre" => "rol",
+                    "campo_marcador" => ":rol",
+                    "campo_valor" => $rol
+                ],
+				 [
+                    "campo_nombre" => "menu",
+                    "campo_marcador" => ":menu",
+                    "campo_valor" => $menu
+                ],
+				[
+                    "campo_nombre" => "cel",
+                    "campo_marcador" => ":cel",
+                    "campo_valor" => $celular
+                ],
+				[
 					"campo_nombre"=>"apepat",
 					"campo_marcador"=>":apepat",
-					"campo_valor"=>$apellido
+					"campo_valor"=>$apepat
 				],
+				[
+                    "campo_nombre" => "apemat",
+                    "campo_marcador" => ":apemat",
+                    "campo_valor" => $apemat
+                ],
 				[
 					"campo_nombre"=>"user",
 					"campo_marcador"=>":user",
@@ -224,7 +246,7 @@
 				[
 					"campo_nombre"=>"correo",
 					"campo_marcador"=>":correo",
-					"campo_valor"=>$email
+					"campo_valor"=>$correo
 				],
 				[
 					"campo_nombre"=>"password",
@@ -247,15 +269,15 @@
 					"campo_valor"=>date("Y-m-d H:i:s")
 				]
 			];
-
 			
+			# Preparando datos para el registro #
 			$registrar_usuario=$this->guardarDatos("usuario",$usuario_datos_reg);
 
 			if($registrar_usuario->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
 					"titulo"=>"Usuario registrado",
-					"texto"=>"El usuario ".$nombre." ".$apellido." se registro con exito",
+					"texto"=>"El usuario ".$nombre." ".$apepat." se registro con exito",
 					"icono"=>"success"
 				];
 			}else{
