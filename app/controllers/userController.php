@@ -78,9 +78,9 @@
 		    }
 
 		    # Verificando email #
-		    if($email!=""){
-				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
+		    if($correo!=""){
+				if(filter_var($correo, FILTER_VALIDATE_EMAIL)){
+					$check_email=$this->ejecutarConsulta("SELECT correo FROM usuario WHERE correo='$correo'");
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -495,7 +495,7 @@
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
 			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -508,12 +508,12 @@
 		    }else{
 		    	$datos=$datos->fetch();
 		    }
-
-		    $admin_usuario=$this->limpiarCadena($_POST['administrador_usuario']);
-		    $admin_clave=$this->limpiarCadena($_POST['administrador_clave']);
+		
+		    //$admin_usuario=$this->limpiarCadena($_POST['administrador_usuario']);
+		    //$admin_clave=$this->limpiarCadena($_POST['administrador_clave']);
 
 		    # Verificando campos obligatorios admin #
-		    if($admin_usuario=="" || $admin_clave==""){
+		 /*    if($admin_usuario=="" || $admin_clave==""){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -547,12 +547,12 @@
 		    }
 
 		    # Verificando administrador #
-		    $check_admin=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_usuario='$admin_usuario' AND usuario_id='".$_SESSION['id']."'");
+		    $check_admin=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user='$admin_usuario' AND id='".$_SESSION['id']."'");
 		    if($check_admin->rowCount()==1){
 
 		    	$check_admin=$check_admin->fetch();
 
-		    	if($check_admin['usuario_usuario']!=$admin_usuario || !password_verify($admin_clave,$check_admin['usuario_clave'])){
+		    	if($check_admin['user']!=$admin_usuario || !password_verify($admin_clave,$check_admin['password'])){
 
 		    		$alerta=[
 						"tipo"=>"simple",
@@ -573,19 +573,25 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-
+ */
 
 			# Almacenando datos#
-		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
-		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
+		    
 
-		    $usuario=$this->limpiarCadena($_POST['usuario_usuario']);
-		    $email=$this->limpiarCadena($_POST['usuario_email']);
-		    $clave1=$this->limpiarCadena($_POST['usuario_clave_1']);
-		    $clave2=$this->limpiarCadena($_POST['usuario_clave_2']);
 
+			$nombre = $this->limpiarCadena($_POST['usuario_nombre']);
+            $apepat = $this->limpiarCadena($_POST['apepat']);
+            $apemat = $this->limpiarCadena($_POST['apemat']);
+            $usuario = $this->limpiarCadena($_POST['usuario_usuario']);
+            $correo = $this->limpiarCadena($_POST['usuario_email']);
+            $celular = $this->limpiarCadena($_POST['usuario_cel']);
+            $clave1 = $_POST['usuario_clave_1'];
+            $clave2 = $_POST['usuario_clave_2'];
+            $rol = $this->limpiarCadena($_POST['usuario_rol']);
+           	$menu=$this->limpiarCadena($_POST['usuario_menu']);
+			
 		    # Verificando campos obligatorios #
-		    if($nombre=="" || $apellido=="" || $usuario==""){
+		    if($nombre=="" || $apepat=="" || $apemat=="" || $usuario==""){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -608,11 +614,22 @@
 		        exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apellido)){
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apepat)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
 					"texto"=>"El APELLIDO no coincide con el formato solicitado",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+
+			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apemat)){
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"El APELLIDO MATERNO no coincide con el formato solicitado",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -631,9 +648,9 @@
 		    }
 
 		    # Verificando email #
-		    if($email!="" && $datos['usuario_email']!=$email){
-				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
+		    if($correo!="" && $datos['correo']!=$correo){
+				if(filter_var($correo, FILTER_VALIDATE_EMAIL)){
+					$check_email=$this->ejecutarConsulta("SELECT correo FROM usuario WHERE correo='$correo'");
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
@@ -684,12 +701,12 @@
 			    	}
 			    }
 			}else{
-				$clave=$datos['usuario_clave'];
+				$clave=$datos['password'];
             }
 
             # Verificando usuario #
-            if($datos['usuario_usuario']!=$usuario){
-			    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
+            if($datos['user']!=$usuario){
+			    $check_usuario=$this->ejecutarConsulta("SELECT user FROM usuario WHERE user='$usuario'");
 			    if($check_usuario->rowCount()>0){
 			        $alerta=[
 						"tipo"=>"simple",
@@ -702,41 +719,166 @@
 			    }
             }
 
+
+			if ($_FILES['usuario_foto']['name']!="" && $_FILES['usuario_foto']['size']>0){
+    # Directorio de imagenes #
+    		$img_dir="../views/fotos/";
+
+    		# Comprobar si se selecciono una imagen #
+    		if($_FILES['usuario_foto']['name']=="" && $_FILES['usuario_foto']['size']<=0){
+    			$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No ha seleccionado una foto para el usuario",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+    		}
+
+    		# Creando directorio #
+	        if(!file_exists($img_dir)){
+	            if(!mkdir($img_dir,0777)){
+	                $alerta=[
+						"tipo"=>"simple",
+						"titulo"=>"Ocurrió un error inesperado",
+						"texto"=>"Error al crear el directorio",
+						"icono"=>"error"
+					];
+					return json_encode($alerta);
+	                exit();
+	            } 
+	        }
+
+	        # Verificando formato de imagenes #
+	        if(mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/png"){
+	            $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"La imagen que ha seleccionado es de un formato no permitido",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+	            exit();
+	        }
+
+	        # Verificando peso de imagen #
+	        if(($_FILES['usuario_foto']['size']/1024)>5120){
+	            $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"La imagen que ha seleccionado supera el peso permitido",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+	            exit();
+	        }
+
+	        # Nombre de la foto #
+	        if($datos['img']!=""){
+		        $foto=explode(".", $datos['img']);
+		        $foto=$foto[0];
+	        }else{
+	        	$foto=str_ireplace(" ","_",$datos['nombre']);
+	        	$foto=$foto."_".rand(0,100);
+	        }
+	        
+
+	        # Extension de la imagen #
+	        switch(mime_content_type($_FILES['usuario_foto']['tmp_name'])){
+	            case 'image/jpeg':
+	                $foto=$foto.".jpg";
+	            break;
+	            case 'image/png':
+	                $foto=$foto.".png";
+	            break;
+	        }
+
+	        chmod($img_dir,0777);
+
+	        # Moviendo imagen al directorio #
+	        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
+	            $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No podemos subir la imagen al sistema en este momento",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+	            exit();
+	        }
+
+	        # Eliminando imagen anterior #
+	        if(is_file($img_dir.$datos['img']) && $datos['img']!=$foto){
+		        chmod($img_dir.$datos['img'], 0777);
+		        unlink($img_dir.$datos['img']);
+		    }
+
+	
+			}
+			else{
+				$foto=$datos['img'];
+			}
             $usuario_datos_up=[
 				[
-					"campo_nombre"=>"usuario_nombre",
-					"campo_marcador"=>":Nombre",
+					"campo_nombre"=>"nombre",
+					"campo_marcador"=>":nombre",
 					"campo_valor"=>$nombre
 				],
 				[
-					"campo_nombre"=>"usuario_apellido",
-					"campo_marcador"=>":Apellido",
-					"campo_valor"=>$apellido
+                    "campo_nombre" => "rol",
+                    "campo_marcador" => ":rol",
+                    "campo_valor" => $rol
+                ],
+				 [
+                    "campo_nombre" => "menu",
+                    "campo_marcador" => ":menu",
+                    "campo_valor" => $menu
+                ],
+				[
+                    "campo_nombre" => "cel",
+                    "campo_marcador" => ":cel",
+                    "campo_valor" => $celular
+                ],
+				[
+					"campo_nombre"=>"apepat",
+					"campo_marcador"=>":apepat",
+					"campo_valor"=>$apepat
 				],
 				[
-					"campo_nombre"=>"usuario_usuario",
-					"campo_marcador"=>":Usuario",
+                    "campo_nombre" => "apemat",
+                    "campo_marcador" => ":apemat",
+                    "campo_valor" => $apemat
+                ],
+				[
+					"campo_nombre"=>"user",
+					"campo_marcador"=>":user",
 					"campo_valor"=>$usuario
 				],
 				[
-					"campo_nombre"=>"usuario_email",
-					"campo_marcador"=>":Email",
-					"campo_valor"=>$email
+					"campo_nombre"=>"correo",
+					"campo_marcador"=>":correo",
+					"campo_valor"=>$correo
 				],
 				[
-					"campo_nombre"=>"usuario_clave",
-					"campo_marcador"=>":Clave",
+					"campo_nombre"=>"password",
+					"campo_marcador"=>":password",
 					"campo_valor"=>$clave
 				],
 				[
+					"campo_nombre"=>"img",
+					"campo_marcador"=>":img",
+					"campo_valor"=>$foto
+				],
+				[
 					"campo_nombre"=>"usuario_actualizado",
-					"campo_marcador"=>":Actualizado",
+					"campo_marcador"=>":usuario_actualizado",
 					"campo_valor"=>date("Y-m-d H:i:s")
 				]
 			];
-
+			
 			$condicion=[
-				"condicion_campo"=>"usuario_id",
+				"condicion_campo"=>"id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
@@ -752,14 +894,14 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Usuario actualizado",
-					"texto"=>"Los datos del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." se actualizaron correctamente",
+					"texto"=>"Los datos del usuario ".$datos['nombre']." ".$datos['apemat']." se actualizaron correctamente",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido actualizar los datos del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido'].", por favor intente nuevamente",
+					"texto"=>"No hemos podido actualizar los datos del usuario ".$datos['nombre']." ".$datos['apemat'].", por favor intente nuevamente",
 					"icono"=>"error"
 				];
 			}
@@ -867,21 +1009,7 @@
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
-			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
-		    if($datos->rowCount()<=0){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el usuario en el sistema",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }else{
-		    	$datos=$datos->fetch();
-		    }
-
+			
 		    # Directorio de imagenes #
     		$img_dir="../views/fotos/";
 
