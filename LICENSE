@@ -1,3 +1,5 @@
 se cambio la BD
 esta das habilitado el login la parte de pass 
 se agrego la ultima actualizacion de kendo 
+crear una rama nueva 
+git checkout -b feature-nueva
