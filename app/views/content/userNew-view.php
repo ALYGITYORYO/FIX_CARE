@@ -2,40 +2,38 @@
         <div class="app-body">
             <!-- Row start -->
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <div class="row row-cols-1 row-cols-lg-12 align-items-stretch g-4">
-                                <div class="col">
-                                    <div class="card card-cover shadow mb-4" style="
-										background-image: url('<?=APP_URL; ?>app/views/img/img8.jpg');
-                                        background-size: cover; /* Para que cubra todo el espacio */
-                                background-repeat: no-repeat; /* Para que no se repita */
-                                background-position: center; /* Centrar la imagen */
-                                min-height: 200px; /* Altura mínima */
-									">
-                                        <div class="p-5 text-white d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <!-- Título más grueso usando fw-bold o fw-bolder -->
-                                                <h4 class="display-5 fw-bold mb-0">
-                                                    <!-- fw-bold para más grueso -->
-                                                    Usuarios
-                                                </h4>
-                                            </div>
-                                            <!-- Botón en la misma línea -->
-                                            <div>
-                                                <button type="button" class="btn btn-lg btn-light"
+
+              <div class="row gx-3">
+                <div class="col-md-12 col-sm-12">
+
+                  <!-- Card starts -->
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="icon-box md rounded-5 bg-primary-subtle">
+                          <i class="ri-user-line text-primary fs-4"></i>
+                        </div>
+                        <div>
+                          <h5 class="mb-1 fw-bold">Gestion usuarios</h5>
+                          <div class="text-secondary">Usuarios Registrados <i class="ri-bar-chart-line text-primary ms-1"> <span id="contadorUsuarios"
+                                                    class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2">
+                                                    <i class="fas fa-spinner fa-spin me-1"></i> Cargando...
+                                                </span></i>
+                          </div>
+                        </div>
+                        <span class="badge rounded-pill ms-auto"> <button type="button" class="btn btn-lg btn-light"
                                                     data-bs-toggle="modal" data-bs-target="#altaUsuarios">
                                                     <i class="fas fa-user-plus me-2"></i> <!-- Icono de FontAwesome -->
                                                     Agregar Usuarios
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                </button></span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Card ends -->
 
+                </div>
+                </div>
 
-                            </div>
 
                             <div class="table-outer">
                                 <div class="table-responsive">
@@ -138,8 +136,7 @@
                                                     reorderable: true,
                                                     toolbar: ["excel", "pdf", "search"],
                                                     columns: [{
-                                                            field: "img",
-                                                            title: "Foto",
+                                                            title: "",
                                                             width: "80px",
                                                             template: function(dataItem) {
                                                                 if (dataItem.img && dataItem
@@ -880,11 +877,6 @@
                                             font-size: 14px;
                                         }
 
-                                        .k-grid-header th {
-                                            background-color: #f8f9fa;
-                                            font-weight: 600;
-                                            white-space: nowrap;
-                                        }
 
                                         .k-grid-content td {
                                             vertical-align: middle;
@@ -2003,3 +1995,75 @@
                
             });
             </script>
+
+
+<style type="text/css">
+        .customer-photo {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-size: 32px 35px;
+            background-position: center center;
+            vertical-align: middle;
+            line-height: 32px;
+            box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+            margin-left: 5px;
+        }
+
+        .customer-name {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 32px;
+            padding-left: 3px;
+        }
+
+        .k-grid tr .checkbox-align {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .product-photo {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-size: 32px 35px;
+            background-position: center center;
+            vertical-align: middle;
+            line-height: 32px;
+            box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+            margin-right: 5px;
+        }
+
+        .product-name {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 32px;
+            padding-left: 3px;
+        }
+
+        .k-rating-container .k-rating-item {
+            padding: 4px 0;
+        }
+
+        .k-rating-container .k-rating-item .k-icon {
+            font-size: 16px;
+        }
+
+        .dropdown-country-wrap {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .dropdown-country-wrap img {
+            margin-right: 10px;
+        }
+
+        #grid .k-grid-edit-row > td > .k-rating {
+            margin-left: 0;
+            width: 100%;
+        }
+    </style>

@@ -4,15 +4,15 @@
 	require_once "../views/inc/session_start.php";
 	require_once "../../autoload.php";
 	
-	use app\controllers\userController;
+	use app\controllers\organizacionController;
 	if(isset($_POST['modulo_organizacion'])){
 		$insOrganizacion = new organizacionController();
 		if($_POST['modulo_organizacion']=="registrar"){
 			echo $insOrganizacion->registrarOrganizacionControlador();
 		}
 
-		if($_POST['modulo_organizacion']=="obtener_Organizacions"){
-			echo $insOrganizacion->obtenerOrganizacionsControlador();
+		if($_POST['modulo_organizacion']=="obtener_organizaciones"){
+			echo $insOrganizacion->obtenerOrganizacionesControlador();
 		}
 
 		if($_POST['modulo_organizacion']=="actualizar"){

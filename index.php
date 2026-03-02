@@ -60,8 +60,9 @@
          
       }
       else{
-        require_once "./app/views/inc/header.php";
         require_once "./app/views/inc/navbar.php";
+        require_once "./app/views/inc/header.php";
+
         require_once $vista;
         require_once "./app/views/inc/footer.php";
       }

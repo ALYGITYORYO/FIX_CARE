@@ -1,6 +1,7 @@
+
           <!-- App footer start -->
           <div class="app-footer">
-            <span>© Bootstrap Gallery 2025</span>
+            <span>© Aly Yoryo 2026</span>
           </div>
           <!-- App footer end -->
 
@@ -11,3 +12,4 @@
       <!-- Main container end -->
 
     </div>
+    <!-- Page wrapper end -->

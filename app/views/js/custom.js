@@ -109,6 +109,19 @@ jQuery(function ($) {
   });
 });
 
+// Sticky Header
+const header = document.querySelector('.app-header');
+function updateStickyHeader() {
+  if (window.scrollY > 10) {
+    header.classList.add('sticky-header');
+  } else {
+    header.classList.remove('sticky-header');
+  }
+}
+window.addEventListener('scroll', updateStickyHeader);
+// Apply on page load
+updateStickyHeader();
+
 /***********
 ***********
 ***********

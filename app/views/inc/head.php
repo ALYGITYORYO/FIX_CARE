@@ -8,15 +8,30 @@
     <link rel="stylesheet" href="<?=APP_URL; ?>app/views/fonts/bootstrap/bootstrap-icons.css" />
     <link rel="stylesheet" href="<?=APP_URL; ?>app/views/css/main.min.css?v1.1" />
     <link rel="stylesheet" href="<?=APP_URL; ?>app/views/css/estilos.css" />
-
+    <link rel="shortcut icon" href="<?=APP_URL; ?>app/views/images/favicon.svg" />
     <!-- ************************* Vendor Css Files ************************* -->
+
+
+       <!-- *************
+			************ CSS Files *************
+		************* -->
+    <!-- Remix Font Icons css -->
+    <link rel="stylesheet" href="<?=APP_URL; ?>app/views/fonts/remix/remixicon.css" />
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="<?=APP_URL; ?>app/views/css/animate.css" />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="<?=APP_URL; ?>app/views/css/main.min.css" />
+
+
 
     <!-- Scrollbar CSS -->
     <link rel="stylesheet" href="<?=APP_URL; ?>app/views/vendor/overlay-scroll/OverlayScrollbars.min.css" />
     
-<link rel="stylesheet" href="<?=APP_URL; ?>app/views/css/sweetalert2.min.css">
+
 <script src="<?=APP_URL; ?>app/views/js/sweetalert2.all.min.js" ></script>
-    <link href="https://kendo.cdn.telerik.com/themes/12.3.0/default/default-purple.css" rel="stylesheet" />
+    
 
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -25,3 +40,4 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://kendo.cdn.telerik.com/themes/13.0.0/default/default-main-dark.css" rel="stylesheet" />

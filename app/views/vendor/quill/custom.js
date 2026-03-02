@@ -1,30 +1,62 @@
-var quill = new Quill("#simpleEditor", {
-	theme: "snow",
-});
+document.addEventListener('DOMContentLoaded', function () {
+  // Basic Editor
+  var basicEditor = new Quill('#basic-quill-editor', {
+    modules: {
+      toolbar: [
+        ['bold', 'italic'],
+        ['link', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }]
+      ]
+    },
+    theme: 'snow'
+  });
 
-var toolbarOptions = [
-	["bold", "italic", "underline", "strike"], // toggled buttons
-	["blockquote", "code-block"],
+  // Snow Theme
+  var snowEditor = new Quill('#snow-editor', {
+    modules: {
+      toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+        ['link', 'image', 'video'],
+        ['clean']
+      ]
+    },
+    theme: 'snow'
+  });
 
-	[{ header: 1 }, { header: 2 }], // custom button values
-	[{ list: "ordered" }, { list: "bullet" }],
-	[{ script: "sub" }, { script: "super" }], // superscript/subscript
-	[{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-	[{ direction: "rtl" }], // text direction
+  // Bubble Theme
+  var bubbleEditor = new Quill('#bubble-editor', {
+    modules: {
+      toolbar: [
+        ['bold', 'italic'],
+        ['link'],
+        [{ 'header': 1 }, { 'header': 2 }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }]
+      ]
+    },
+    theme: 'bubble'
+  });
 
-	[{ size: ["small", false, "large", "huge"] }], // custom dropdown
-	[{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-	[{ color: [] }, { background: [] }], // dropdown with defaults from theme
-	[{ font: [] }],
-	[{ align: [] }],
-
-	["clean"], // remove formatting button
-];
-
-var quill = new Quill("#fullEditor", {
-	modules: {
-		toolbar: toolbarOptions,
-	},
-	theme: "snow",
+  // Full Featured Editor
+  var fullEditor = new Quill('#full-editor', {
+    modules: {
+      toolbar: [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'font': [] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'align': [] }],
+        ['blockquote', 'code-block'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image', 'video'],
+        ['clean']
+      ]
+    },
+    theme: 'snow'
+  });
 });

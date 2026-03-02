@@ -1,0 +1,52 @@
+/* Custom styles for the wizard */
+.wizard-steps .nav-link {
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.wizard-steps .nav-link:hover:not(.active) {
+  background-color: rgba(var(--bs-primary-rgb), 0.05);
+}
+
+.wizard-steps .nav-link.active {
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+  color: var(--bs-primary);
+}
+
+.wizard-step-icon {
+  transition: all 0.3s ease;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.wizard-connector {
+  position: absolute;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.1);
+  top: 2.5rem;
+  width: 50%;
+  right: 0;
+  z-index: -1;
+}
+
+.nav-item.position-relative {
+  z-index: 1;
+}
+
+/* Completed step styles */
+.nav-link.completed {
+  background-color: rgba(var(--bs-success-rgb), 0.1);
+  color: var(--bs-success);
+}
+
+.nav-link.completed .wizard-step-icon {
+  background-color: #2db57c !important;
+}
+
+.nav-link.completed .wizard-step-icon i {
+  color: #fff !important;
+}

@@ -3,6 +3,12 @@
   
   <body class="login-bg">
 
+    <!-- Container starts -->
+    <div class="container">
+
+      <!-- Auth wrapper starts -->
+      <div class="auth-wrapper">
+
 	 <!-- Form start -->
     <form action="" class="box login my-5" method="POST" autocomplete="off">
       <div class="auth-box border border-dark">
@@ -35,6 +41,12 @@
       </div>
     </form>
     <!-- Form end -->
+
+    </div>
+    <!-- Auth wrapper ends -->
+    </div>
+    <!-- Container ends -->
+</div>
 </body>
 <?php
 	if(isset($_POST['login_usuario']) && isset($_POST['login_clave'])){
